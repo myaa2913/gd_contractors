@@ -4,18 +4,8 @@ import csv, sys
 
 csv.field_size_limit(sys.maxsize)
 
-
-#read in contractor reviewids and assign to a set
-contractIDs = set()
-with open('/ifs/gsb/mcorrito/gd_contractors/data/contractor_reviewids.csv','r') as csvfile:
-    read = csv.reader(csvfile, delimiter = ',')
-    for row in read:
-        contractIDs.add(row[0])
-csvfile.close()        
-
-
 #extract the rows we need
-header = ['reviewID','pro','con','feedback']
+header = ['reviewID','orgID','naics','name','shortName','sectorName','industryName','pro','con','feedback']
 
 masterFile = open("/data/gsb/amirgo/mac/reviews_UCBerkeley.csv",'rU')
 newFile = open("/tmp/extract.csv",'w')
@@ -31,10 +21,8 @@ next(read)
 
 for row in read:
     if len(row)==57:
-        reviewID = row[0]
-        if reviewID in contractIDs:
-            dataRow = [row[0],row[54],row[55],row[56]]
-            write.writerow(dataRow)
+        dataRow = [row[0],row[1],row[43],row[44],row[45],row[49],row[50],row[54],row[55],row[56]]
+        write.writerow(dataRow)
 
 masterFile.close()
 newFile.close()
