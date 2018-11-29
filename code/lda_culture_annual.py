@@ -56,11 +56,19 @@ def ldaModel(numWords,num_topics):
 
     print(df.shape)
 
+    df = df.dropna()
+
+    print(df.shape)
+
     #calculate review word count and add to ids
     wordCount = np.sum(df,axis=1)
-        
+
     #convert to matrix
     mat = df.as_matrix()
+
+    mat = mat.astype(np.int64)
+    
+    print(mat.dtype)
     
     #apply model
     print("BEGIN")
