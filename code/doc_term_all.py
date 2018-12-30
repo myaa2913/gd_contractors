@@ -44,6 +44,7 @@ def docTerm(dict,numWords):
                 data[yr][orgID][reviewID]['all'] = {}
                 data[yr][orgID][reviewID]['all']['wordCount'] = len(tokens)
 
+
                 data[yr][orgID][reviewID]['all']['uniCount'] = {}
 
                 for i in set(tokens):

@@ -39,6 +39,7 @@ egen orgid2=group(orgid)
 egen reviewid2=group(reviewid)
 summarize
 drop orgid2 reviewid2
+
 sort orgid year
 export delimited "/ifs/gsb/mcorrito/gd_contractors/data/master_orgIDs_annual.csv",replace
 

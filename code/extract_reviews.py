@@ -5,7 +5,7 @@ import csv, sys
 csv.field_size_limit(sys.maxsize)
 
 #extract the rows we need
-header = ['reviewID','orgID','datetime','naics','name','shortName','sectorName','industryName','pro','con','feedback']
+header = ['reviewID','orgID','datetime','status','naics','name','shortName','sectorName','industryName','pro','con','feedback']
 
 masterFile = open("/data/gsb/amirgo/mac/reviews_UCBerkeley.csv",'rU')
 newFile = open("/tmp/extract.csv",'w')
@@ -21,7 +21,7 @@ next(read)
 
 for row in read:
     if len(row)==57:
-        dataRow = [row[0],row[1],row[16],row[43],row[44],row[45],row[49],row[50],row[54],row[55],row[56]]
+        dataRow = [row[0],row[1],row[16],row[20],row[43],row[44],row[45],row[49],row[50],row[54],row[55],row[56]]
         write.writerow(dataRow)
 
 masterFile.close()
