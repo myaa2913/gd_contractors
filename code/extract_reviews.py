@@ -7,8 +7,8 @@ csv.field_size_limit(sys.maxsize)
 #extract the rows we need
 header = ['reviewID','orgID','datetime','status','naics','name','shortName','sectorName','industryName','pro','con','feedback']
 
-masterFile = open("/data/gsb/amirgo/mac/reviews_UCBerkeley.csv",'rU')
-newFile = open("/tmp/extract.csv",'w')
+masterFile = open("/ifs/gsb/mcorrito/gd_contractors/data/reviews_UCBerkeley.csv",'rU')
+newFile = open("/ifs/gsb/mcorrito/gd_contractors/temp_data/extract.csv",'w')
 write = csv.writer(newFile)
 write.writerow(header)
 

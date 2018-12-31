@@ -5,7 +5,7 @@ log using "/ifs/gsb/mcorrito/gd_contractors/output/restrict_orgs_stats.log",repl
 log off
 
 /*import extract csv*/
-import delimited "/tmp/extract.csv",bindquotes(strict) varnames(1) colrange(1:11) clear 
+import delimited "/ifs/gsb/mcorrito/gd_contractors/temp_data/extract.csv",bindquotes(strict) varnames(1) colrange(1:12) clear 
 
 destring reviewid orgid,replace force
 
@@ -43,6 +43,16 @@ drop orgid2 reviewid2
 sort orgid year
 export delimited "/ifs/gsb/mcorrito/gd_contractors/data/master_orgIDs_annual.csv",replace
 
+/*drop contractor reviews and recalculate number of firms/reviews*/
+drop if status==2
+egen orgid2=group(orgid)
+egen reviewid2=group(reviewid)
+summarize
+
+keep reviewid
+sort reviewid
+export delimited "/ifs/gsb/mcorrito/gd_contractors/data/noncontract_reviewIDs_annual.csv",replace
+    
 log close
 
 
