@@ -50,9 +50,14 @@ def ldaModel(numWords,num_topics):
     #apply model to working sample#######################################################################
     df = pd.read_csv('/ifs/gsb/mcorrito/gd_contractors/data/' + 'top_unigrams_annual_' + str(numWords) + '.csv',sep=',')
 
+    #sum rows within org/years
+    #first drop reviewid
+    df = df.drop('reviewid', axis=1)
+    df = df.groupby(['orgid','year']).sum().reset_index()
+
     #remove ids and save for later concat
-    ids = df.drop(df.columns[3:len(df.columns)],axis=1)
-    df = df.drop(df.columns[[0,1,2]],axis=1)
+    ids = df.drop(df.columns[2:len(df.columns)],axis=1)
+    df = df.drop(df.columns[[0,1]],axis=1)
 
     print(df.shape)
 
@@ -79,7 +84,7 @@ def ldaModel(numWords,num_topics):
     df = pd.DataFrame(modelTest)
     df = pd.concat([ids,wordCount,df],axis=1,ignore_index=True)
 
-    df.to_csv('/ifs/gsb/mcorrito/gd_contractors/output/' + 'lda_final_' + str(numWords) + '_' + str(num_topics) + '_annual.csv')
+    df.to_csv('/ifs/gsb/mcorrito/gd_contractors/output/' + 'lda_final_' + str(numWords) + '_' + str(num_topics) + '_annual_agg.csv')
 
     print("MODEL DONE")
     
