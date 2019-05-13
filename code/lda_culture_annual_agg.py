@@ -8,10 +8,10 @@ import numpy as np
 
 def ldaModel(numWords,num_topics):
     #load phrase doc-term matrix
-    df = pd.read_csv('/ifs/gsb/mcorrito/duality/' + 'top_unigrams_phrase_' + str(numWords) + '_pruned.csv',sep=',')
+    df = pd.read_csv('/ifs/gsb/mcorrito/duality/' + 'top_unigrams_phrase_' + str(numWords) + '_pruned.csv',sep=',',dtype='int64')
 
     #remove ids
-    df = df.drop(df.columns[[0,1,2]],axis=1)
+    df = df.drop(df.columns[[0,1,2,3]],axis=1)
 
     print(df.shape)
     
@@ -30,13 +30,13 @@ def ldaModel(numWords,num_topics):
 
     #plot and save convergence graph
     plt.plot(model.loglikelihoods_[5:])
-    plt.savefig('/ifs/gsb/mcorrito/gd_contractors/output/' + 'lda_convergence_' + str(numWords) + '_' + str(num_topics) + '.png')
+    plt.savefig('/ifs/gsb/mcorrito/gd_contractors/output/' + 'lda_convergence_' + str(numWords) + '_' + str(num_topics) + '_agg.png')
     plt.close()
 
 
     ###save model components for use and evaluation
     ##save top words for each topic to csv file
-    with open('/ifs/gsb/mcorrito/gd_contractors/output/' + str(numWords) + '_' + str(num_topics) + '_' + 'lda_words','w') as csvfile:
+    with open('/ifs/gsb/mcorrito/gd_contractors/output/' + str(numWords) + '_' + str(num_topics) + '_' + 'lda_words_agg','w') as csvfile:
         writer = csv.writer(csvfile,delimiter=',',lineterminator='\n')
         
         for i, topic_dist in enumerate(topic_word):
@@ -44,17 +44,24 @@ def ldaModel(numWords,num_topics):
             writer.writerow(['Topic {}: {}'.format(i, ' '.join(topic_words))])
     csvfile.close()
 
+    #do some memory cleanup
+    del df
+    
     print("apply model to working sample")    
 
     
     #apply model to working sample#######################################################################
-    df = pd.read_csv('/ifs/gsb/mcorrito/gd_contractors/data/' + 'top_unigrams_annual_' + str(numWords) + '.csv',sep=',')
+    df = pd.read_csv('/ifs/gsb/mcorrito/gd_contractors/data/' + 'top_unigrams_annual_' + str(numWords) + '.csv',sep=',',dtype='int64')
+
+    print(df.dtypes)
 
     #sum rows within org/years
     #first drop reviewid
     df = df.drop('reviewid', axis=1)
     df = df.groupby(['orgid','year']).sum().reset_index()
 
+    print(df.head())
+    
     #remove ids and save for later concat
     ids = df.drop(df.columns[2:len(df.columns)],axis=1)
     df = df.drop(df.columns[[0,1]],axis=1)
@@ -93,7 +100,6 @@ ldaModel(4000,100)
 
     
     
-
 
 
 
