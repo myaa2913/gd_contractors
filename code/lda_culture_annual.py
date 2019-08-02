@@ -8,7 +8,7 @@ import numpy as np
 
 def ldaModel(numWords,num_topics):
     #load phrase doc-term matrix
-    df = pd.read_csv('/project/def-mcorrito/mcorrito/duality/' + 'top_unigrams_phrase_' + str(numWords) + '_pruned.csv',sep=',',dtype='int64')
+    df = pd.read_csv('/project/def-mcorrito/mcorrito/duality/' + 'top_unigrams_phrase_' + str(numWords) + '_pruned.csv',sep=',',dtype='int32')
 
     #remove ids
     df = df.drop(df.columns[[0,1,2,3]],axis=1)
@@ -48,7 +48,9 @@ def ldaModel(numWords,num_topics):
 
     
     #apply model to working sample#######################################################################
-    df = pd.read_csv('/project/def-mcorrito/mcorrito/gd_contractors/data/' + 'top_unigrams_annual_' + str(numWords) + '.csv',sep=',',dtype='int64')
+    #free up memory
+    del df
+    df = pd.read_csv('/project/def-mcorrito/mcorrito/gd_contractors/data/' + 'top_unigrams_annual_' + str(numWords) + '.csv',sep=',',dtype='int32')
 
     #remove ids and save for later concat
     ids = df.drop(df.columns[3:len(df.columns)],axis=1)
